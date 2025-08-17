@@ -4,15 +4,14 @@
   "description": "Automated job application testing framework for Kontron AG using Playwright with TypeScript",
   "type": "commonjs",
   "scripts": {
-    "test": "playwright test",                        // Run all tests
-    "test:ui": "playwright test --ui",                // Run tests in UI mode
-    "test:chrome": "playwright test --project=chromium", // Chromium only
-    "test:ci": "playwright test --project=chromium --reporter=line,html --trace=off --video=off", 
-                                                     // CI-optimized run
-    "test:grep": "playwright test --grep",            // Run tests by pattern
-    "report": "playwright show-report",               // Open last HTML report
-    "clean": "rimraf test-results playwright-report", // Cross-platform cleanup
-    "lint": "tsc --noEmit"                            // Type-check only
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:chrome": "playwright test --project=chromium",
+    "test:ci": "playwright test --project=chromium --reporter=line,html --trace=off --video=off",
+    "test:grep": "playwright test --grep",
+    "report": "playwright show-report",
+    "clean": "rimraf test-results playwright-report",
+    "lint": "tsc --noEmit"
   },
   "engines": {
     "node": ">=18"
