@@ -1,18 +1,35 @@
 import { test, expect } from '@playwright/test';
 
-test('has title', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
-
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Playwright/);
+test('basic test', async ({ page }) => {
+  // Navigate to your base URL (from config)
+  await page.goto('/');
+  
+  // Simple assertion to verify page loads
+  await expect(page).toHaveTitle(/.*/, { timeout: 10000 });
+  
+  console.log('Test completed successfully!');
 });
 
-test('get started link', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
-
-  // Click the get started link.
-  await page.getByRole('link', { name: 'Get started' }).click();
-
-  // Expects page to have a heading with the name of Installation.
-  await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
+test('application health check', async ({ page }) => {
+  // Test your actual application URL from BASE_URL env variable
+  await page.goto('/');
+  
+  // Basic checks that your application loads properly
+  // Adjust these assertions based on your actual application
+  await expect(page).not.toHaveTitle('Error');
+  
+  // Check that the page doesn't show common error messages
+  const errorMessages = [
+    'Page not found',
+    '404',
+    'Server Error',
+    '500',
+    'Something went wrong'
+  ];
+  
+  for (const errorMsg of errorMessages) {
+    await expect(page.locator('body')).not.toContainText(errorMsg);
+  }
+  
+  console.log('Application health check passed!');
 });

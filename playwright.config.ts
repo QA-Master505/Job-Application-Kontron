@@ -57,7 +57,7 @@ const projects = [
 // Export Playwright config
 // -----------------------------------------------------------------------------
 export default defineConfig({
-  testDir: './tests',     // Location of test files
+  testDir: './tests',     // Location of test files - change this if your tests are elsewhere
   outputDir: 'test-results', // Folder for test artifacts (traces, screenshots, etc.)
   timeout: TEST_TIMEOUT,  // Max timeout per test
 
