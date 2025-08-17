@@ -1,0 +1,53 @@
+{
+  "compilerOptions": {
+    /* Language & Environment */
+    "target": "ES2020",                        // Modern JS output
+    "lib": ["ES2020", "DOM"],                  // Needed for browser + Node typings
+    "types": ["node", "@playwright/test"],     // Include Playwright + Node types
+
+    /* Modules */
+    "module": "CommonJS",                      // Compatible with Node.js
+    "moduleResolution": "node",                // Standard Node module resolution
+    "esModuleInterop": true,                   // Allow import/export compatibility
+    "allowSyntheticDefaultImports": true,      // Simplify default imports
+    "resolveJsonModule": true,                 // Import JSON files as modules
+    "isolatedModules": true,                   // Safer for Playwright + TS (per-file transpile)
+
+    /* Path Aliases (nice for POM structure) */
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"],
+      "@pages/*": ["src/pages/*"],
+      "@utils/*": ["src/utils/*"],
+      "@config/*": ["src/config/*"],
+      "@data/*": ["src/data/*"],
+      "@base/*": ["src/base/*"]
+    },
+
+    /* Type Checking */
+    "strict": true,                            // Enable all strict checks
+    "noImplicitAny": true,                     // Disallow implicit any
+    "strictNullChecks": true,                  // Null safety
+    "noImplicitReturns": true,                 // Must return explicitly
+    "noUnusedLocals": true,                    // Warn unused variables
+    "noUnusedParameters": false,               // Allow unused params (common in tests)
+    "skipLibCheck": true,                      // Skip library type checks (faster)
+    "forceConsistentCasingInFileNames": true,  // Enforce import casing consistency
+
+    /* Output */
+    "noEmit": true,                            // Don't emit JS (only type-check)
+    "sourceMap": true                          // Helpful for debugging stack traces
+  },
+  "include": [
+    "src/**/*.ts",
+    "tests/**/*.ts",
+    "playwright.config.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    "playwright-report",
+    "test-results"
+  ]
+}
