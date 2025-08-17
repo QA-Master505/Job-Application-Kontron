@@ -47,13 +47,7 @@ jobs:
 
       # Step 5: Run Playwright tests (Chromium only)
       - name: Run Playwright tests (Chromium only)
-        run: |
-          npx playwright test \
-            --project=chromium \               # Restrict to Chromium only
-            --reporter=line,html \             # Console + HTML report
-            --trace=off \                      # Disable trace to save space
-            --video=off \                      # Disable video recording
-            --screenshot=only-on-failure       # Only capture screenshots when failing
+        run: npx playwright test
 
       # Step 6: Upload report if tests fail
       - name: Upload HTML Report (on failure)
