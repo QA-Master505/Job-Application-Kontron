@@ -21,6 +21,7 @@ jobs:
     timeout-minutes: 20            # Auto-fail if job exceeds 20 minutes (saves credits)
     env:
       CI: true                     # Ensure Playwright uses CI mode (headless, retries, etc.)
+      BASE_URL: https://playwright.dev  # Override BASE_URL for CI tests
 
     steps:
       # Step 1: Checkout repository
