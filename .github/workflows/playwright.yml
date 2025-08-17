@@ -1,0 +1,65 @@
+# .github/workflows/playwright.yml
+# -------------------------------------------------------------------
+# Optimized Playwright CI for GitHub Actions
+# - Runs on push/PR to main/master
+# - Installs only Chromium (saves time & space)
+# - Keeps job under 20 minutes for free plan
+# - Uploads report only on failure (short retention)
+# -------------------------------------------------------------------
+
+name: Playwright Tests
+
+on:
+  push:
+    branches: [ main, master ]     # Trigger when code is pushed to main or master
+  pull_request:
+    branches: [ main, master ]     # Trigger for PRs targeting main or master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest         # Use latest Ubuntu runner
+    timeout-minutes: 20            # Auto-fail if job exceeds 20 minutes (saves credits)
+    env:
+      CI: true                     # Ensure Playwright uses CI mode (headless, retries, etc.)
+
+    steps:
+      # Step 1: Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1           # Shallow clone for speed (no full history)
+
+      # Step 2: Setup Node.js with caching
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*      # Use latest active LTS version
+          cache: npm               # Cache npm dependencies between runs
+
+      # Step 3: Install project dependencies
+      - name: Install dependencies
+        run: npm ci --no-audit     # Clean install, skip audit (saves time)
+
+      # Step 4: Install ONLY Chromium browser + OS deps
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      # Step 5: Run Playwright tests (Chromium only)
+      - name: Run Playwright tests (Chromium only)
+        run: |
+          npx playwright test \
+            --project=chromium \               # Restrict to Chromium only
+            --reporter=line,html \             # Console + HTML report
+            --trace=off \                      # Disable trace to save space
+            --video=off \                      # Disable video recording
+            --screenshot=only-on-failure       # Only capture screenshots when failing
+
+      # Step 6: Upload report if tests fail
+      - name: Upload HTML Report (on failure)
+        if: failure() && !cancelled()          # Only if job failed
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-failure-report      # Artifact name
+          path: playwright-report/             # Upload HTML report folder
+          retention-days: 2                    # Keep for 2 days only (saves storage)
+          compression-level: 0                 # Faster upload, no heavy compression
